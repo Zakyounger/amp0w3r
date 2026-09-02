@@ -3,8 +3,11 @@
   "name": "amp0w3r",
   "compatibility_date": "2026-09-02",
 
+  "main": "src/index.js",
+
   "assets": {
-    "directory": "."
+    "directory": "./public",
+    "binding": "ASSETS"
   },
 
   "d1_databases": [
