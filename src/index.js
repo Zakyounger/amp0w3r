@@ -53,6 +53,6 @@ export default {
     }
 
     // Serve the storefront
-    return env.DB.fetch(request);
+    return env.ASSETS.fetch(request);
   }
 };
