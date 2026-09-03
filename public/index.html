@@ -1187,7 +1187,70 @@
       `;
     }).join("");
   }
+function filterCategory(category) {
+  brandFilter.value = "";
+  productSearch.value = "";
+  
+  // Show the catalog
+  document.getElementById("performance").scrollIntoView({
+    behavior: "smooth"
+  });
 
+  const filtered = products.filter(product =>
+    product.category === category
+  );
+
+  productStatus.textContent =
+    `${filtered.length} product${filtered.length === 1 ? "" : "s"} in ${category}`;
+
+  if (filtered.length === 0) {
+    productGrid.innerHTML =
+      '<div class="empty-cart">No products in this category yet.</div>';
+    return;
+  }
+
+  productGrid.innerHTML = filtered.map(product => {
+    const inStock = Number(product.inventory) > 0;
+
+    return `
+      <article class="product">
+        <div class="product-image no-image">
+          ${product.image_url
+            ? `<img src="${escapeHtml(product.image_url)}"
+                    alt="${escapeHtml(product.name)}"
+                    loading="lazy">`
+            : ""}
+        </div>
+
+        <div class="product-info">
+          <div class="product-brand">
+            ${escapeHtml(product.brand_name || "AMP0W3R")}
+          </div>
+
+          <h3>${escapeHtml(product.name)}</h3>
+
+          <div class="stock ${inStock ? "in-stock" : "out-of-stock"}">
+            ${inStock ? `${product.inventory} in stock` : "Out of stock"}
+          </div>
+
+          <div class="product-bottom">
+            <div class="price">
+              ${money(product.price_cents)}
+            </div>
+
+            <button
+              class="add-btn"
+              ${inStock ? "" : "disabled"}
+              onclick="addToCart(${Number(product.id)})"
+            >
+              ${inStock ? "ADD" : "SOLD OUT"}
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
   function saveCart() {
     localStorage.setItem("amp0w3r_cart", JSON.stringify(cart));
   }
